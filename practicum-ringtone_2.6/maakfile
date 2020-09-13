@@ -1,0 +1,27 @@
+gcc := "..\..\i686-7.3.0-release-posix-dwarf-rt_v5-rev0\mingw32/bin/g++"
+ln := "..\..\i686-7.3.0-release-posix-dwarf-rt_v5-rev0\mingw32/bin/g++"
+rm := rm -f
+
+
+
+.PHONY: build clean song.hpp
+
+song.hpp: build
+	./generator.exe
+
+build: generator.exe
+
+clean: 
+	$(rm) generator.exe generator.o note_player_pc.o rtttl_player.o
+
+generator.exe : generator.o note_player_pc.o rtttl_player.o
+	$(ln) generator.o note_player_pc.o rtttl_player.o -o generator.exe
+
+generator.o : generator.cpp note_player_pc.hpp rtttl_player.hpp
+	$(gcc) -c generator.cpp -o generator.o
+note_player_pc.o : note_player_pc.cpp note_player_pc.hpp note.hpp 
+	$(gcc) -c note_player_pc.cpp -o note_player_pc.o
+rtttl_player.o : rtttl_player.cpp rtttl_player.hpp
+	$(gcc) -c rtttl_player.cpp -o rtttl_player.o
+
+
